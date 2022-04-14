@@ -39,6 +39,12 @@ class ExpenseEntryItemList extends React.Component {
 
     handleDelete(itemID, e) {
         e.preventDefault()
+
+        if ( this.props.onDelete != null ) {
+            this.props.onDelete(itemID, e)
+        }
+
+        /*
         console.log(`------ Remove Item is Fired -----`)
         console.log(itemID)
 
@@ -46,7 +52,7 @@ class ExpenseEntryItemList extends React.Component {
             const items = [];
 
             state.items.forEach((item, idx) => {
-                if(item.id != itemID) {
+                if (item.id !== itemID) {
                     items.push(item)
                 }
             })
@@ -57,6 +63,7 @@ class ExpenseEntryItemList extends React.Component {
 
             return newState
         })
+        */
     }
 
     getTotal() {
@@ -68,35 +75,39 @@ class ExpenseEntryItemList extends React.Component {
         return total
     }
 
-    /*
     static getDerivedStateFromProps(props, state) {
-        console.log("ExpenseEntryItemList :: Initialize / Update :: getDerivedStateFromProps :: Before update");
-        return null;
+        console.log("ExpenseEntryItemList :: Initialize / Update :: getDerivedStateFromProps :: Before update")
+        // return null
+
+        let newState = {
+           items: props.items
+        }
+        return newState
     }
 
+    /*
     componentDidMount() {
-        console.log("ExpenseEntryItemList :: Initialize :: componentDidMount :: Component mounted");
+        console.log("ExpenseEntryItemList :: Initialize :: componentDidMount :: Component mounted")
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log("ExpenseEntryItemList :: Update :: shouldComponentUpdate invoked :: Before update");
-        return true;
+        console.log("ExpenseEntryItemList :: Update :: shouldComponentUpdate invoked :: Before update")
+        return true
     }
 
     getSnapshotBeforeUpdate(prevProps, prevState) {
-        console.log("ExpenseEntryItemList :: Update :: getSnapshotBeforeUpdate :: Before update");
-        return null;
+        console.log("ExpenseEntryItemList :: Update :: getSnapshotBeforeUpdate :: Before update")
+        return null
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("ExpenseEntryItemList :: Update :: componentDidUpdate :: Component updated");
+        console.log("ExpenseEntryItemList :: Update :: componentDidUpdate :: Component updated")
     }
 
     componentWillUnmount() {
-        console.log("ExpenseEntryItemList :: Remove :: componentWillUnmount :: Component unmounted");
+        console.log("ExpenseEntryItemList :: Remove :: componentWillUnmount :: Component unmounted")
     }
     */
-     
 
     render() {
         const lists = this.state.items.map( (item) => 
@@ -105,31 +116,35 @@ class ExpenseEntryItemList extends React.Component {
               <td>{item.amount}</td>
               <td>{new Date(item.spendDate).toDateString()}</td>
               <td>{item.category}</td>
-              <td><a href="#" onClick={(e) =>  this.handleDelete(item.id, e)}>Remove</a></td>
+              <td><a href="#" onClick={(e) => this.handleDelete(item.id, e)}>Remove</a></td>
            </tr>
         )
 
         return (
-            <table onMouseOver={this.handleMouseOver}>
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Category</th>
-                        <th>Remove</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {lists}
-                    <tr>
-                        <td colSpan="1" style={{ textAlign: "right" }}>Total Amount</td>
-                        <td colSpan="4" style={{ textAlign: "left" }}>
-                            {this.getTotal()}
-                        </td> 
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <div>{this.props.header}</div> 
+                <table onMouseOver={this.handleMouseOver}>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {lists}
+                        <tr>
+                            <td colSpan="1" style={{ textAlign: "right" }}>Total Amount</td>
+                            <td colSpan="4" style={{ textAlign: "left" }}>
+                                {this.getTotal()}
+                            </td> 
+                        </tr>
+                    </tbody>
+                </table>
+                <div>{this.props.footer}</div> 
+            </div>
         )
     }     
 }

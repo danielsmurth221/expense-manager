@@ -5,6 +5,7 @@ import ExpenseEntryItem from "./components/ExpenseEntryItem"
 import ExpenseEntryItemList from './components/ExpenseEntryItemList'
 import MessageWithEvent from "./components/MessageWithEvent"
 import ExpenseEntryItemListFn from "./components/ExpenseEntryItemListFn"
+import Pager from "./components/Pager"
 
 const item = { 
   id: 1, 
@@ -27,6 +28,8 @@ const items = [
   { id: 10, name: "Exam Fees", amount: 1245, spendDate: "2020-11-04", category: "Academic" }
 ]
 
+const pageCount = 3
+
 /*
 ReactDOM.render(
   <React.StrictMode>
@@ -38,6 +41,7 @@ ReactDOM.render(
 )
 */
 
+/*
 ReactDOM.render(
   <React.StrictMode>
     <div>
@@ -45,10 +49,21 @@ ReactDOM.render(
       <MessageWithEvent name="React developer" />
     </div>
 
-    <ExpenseEntryItemList items={items} />
+    <ExpenseEntryItemList 
+      items={items} 
+      header={
+        <div><h1>Expense manager</h1></div>
+      }
+      footer={
+        <div style={{ textAlign: "left" }}>
+          <p style={{ fontSize: 12 }}>Sample application</p>
+        </div>
+      } 
+    />
   </React.StrictMode>,
   document.getElementById('root')
 )
+*/
 
 /*
 ReactDOM.render(
@@ -63,3 +78,28 @@ ReactDOM.render(
   document.getElementById('root')
 )
 */
+
+ReactDOM.render(
+  <React.StrictMode>
+    <div>
+      <MessageWithEvent name="React" />
+      <MessageWithEvent name="React developer" />
+    </div>
+
+    <Pager
+      items={items}
+      pageCount={pageCount}
+      render={
+        pagerState => (
+           <div>
+              <ExpenseEntryItemList 
+                items={pagerState.items} 
+                onDelete={pagerState.deleteHandler} 
+              />
+           </div>
+        )
+      }
+    />
+  </React.StrictMode>,
+  document.getElementById('root')
+)
